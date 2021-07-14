@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 class SocialShare {
   static const MethodChannel _channel = const MethodChannel('social_share');
 
-  static Future<String> shareInstagramStory(
+  static Future<String?> shareInstagramStory(
       String imagePath,
       String backgroundTopColor,
       String backgroundBottomColor,
@@ -38,17 +38,17 @@ class SocialShare {
         "attributionURL": attributionURL
       };
     }
-    final String response =
+    final String? response =
         await _channel.invokeMethod('shareInstagramStory', args);
     return response;
   }
 
-  static Future<String> shareInstagramStorywithBackground(
+  static Future<String?> shareInstagramStorywithBackground(
       String imagePath,
       String backgroundTopColor,
       String backgroundBottomColor,
       String attributionURL,
-      {String backgroundImagePath}) async {
+      {String? backgroundImagePath}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{
@@ -70,7 +70,7 @@ class SocialShare {
       file = await File(stickerAssetPath).create();
       file.writeAsBytesSync(stickerAssetAsList);
 
-      File backgroundimage = File(backgroundImagePath);
+      File backgroundimage = File(backgroundImagePath!);
       Uint8List backgroundimagedata = backgroundimage.readAsBytesSync();
       String backgroundAssetName = 'backgroundAsset.jpg';
       final Uint8List backgroundAssetAsList = backgroundimagedata;
@@ -86,14 +86,14 @@ class SocialShare {
       };
     }
 
-    final String response =
+    final String? response =
         await _channel.invokeMethod('shareInstagramStory', args);
 
     return response;
   }
 
-  static Future<String> shareFacebook(String contentText,
-      {String imagePath}) async {
+  static Future<String?> shareFacebook(String contentText,
+      {String? imagePath}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{"image": imagePath, "content": contentText};
@@ -113,16 +113,16 @@ class SocialShare {
         args = <String, dynamic>{"image": imagePath, "content": contentText};
       }
     }
-    final String version = await _channel.invokeMethod('shareFacebook', args);
+    final String? version = await _channel.invokeMethod('shareFacebook', args);
     return version;
   }
 
-  static Future<String> shareFacebookStory(
+  static Future<String?> shareFacebookStory(
       String imagePath,
       String backgroundTopColor,
       String backgroundBottomColor,
       String attributionURL,
-      {String appId}) async {
+      {String? appId}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{
@@ -149,19 +149,19 @@ class SocialShare {
         "appId": appId
       };
     }
-    final String response =
+    final String? response =
         await _channel.invokeMethod('shareFacebookStory', args);
     return response;
   }
 
-  static Future<String> shareTwitter(String captionText,
-      {List<String> hashtags, String url, String trailingText}) async {
+  static Future<String?> shareTwitter(String captionText,
+      {List<String>? hashtags, String? url, String? trailingText}) async {
     Map<String, dynamic> args;
     String modifiedUrl;
     if (Platform.isAndroid) {
-      modifiedUrl = Uri.parse(url).toString().replaceAll('#', "%23");
+      modifiedUrl = Uri.parse(url!).toString().replaceAll('#', "%23");
     } else {
-      modifiedUrl = Uri.parse(url).toString();
+      modifiedUrl = Uri.parse(url!).toString();
     }
     if (hashtags != null && hashtags.isNotEmpty) {
       String tags = "";
@@ -172,21 +172,21 @@ class SocialShare {
         "captionText":
             Uri.parse(captionText + "\n" + tags.toString()).toString(),
         "url": modifiedUrl,
-        "trailingText": Uri.parse(trailingText).toString()
+        "trailingText": Uri.parse(trailingText!).toString()
       };
     } else {
       args = <String, dynamic>{
         "captionText": Uri.parse(captionText + " ").toString(),
         "url": modifiedUrl,
-        "trailingText": Uri.parse(trailingText).toString()
+        "trailingText": Uri.parse(trailingText!).toString()
       };
     }
-    final String version = await _channel.invokeMethod('shareTwitter', args);
+    final String? version = await _channel.invokeMethod('shareTwitter', args);
     return version;
   }
 
-  static Future<String> shareSms(String contentText,
-      {String imagePath, String phoneNumber}) async {
+  static Future<String?> shareSms(String contentText,
+      {String? imagePath, String? phoneNumber}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{"image": imagePath, "content": contentText};
@@ -214,20 +214,20 @@ class SocialShare {
         };
       }
     }
-    final String version = await _channel.invokeMethod('shareSms', args);
+    final String? version = await _channel.invokeMethod('shareSms', args);
     return version;
   }
 
-  static Future<bool> copyToClipboard(content) async {
+  static Future<bool?> copyToClipboard(content) async {
     final Map<String, String> args = <String, String>{
       "content": content.toString()
     };
-    final bool response = await _channel.invokeMethod('copyToClipboard', args);
+    final bool? response = await _channel.invokeMethod('copyToClipboard', args);
     return response;
   }
 
-  static Future<bool> shareOptions(String contentText,
-      {String imagePath}) async {
+  static Future<bool?> shareOptions(String contentText,
+      {String? imagePath}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{"image": imagePath, "content": contentText};
@@ -247,12 +247,12 @@ class SocialShare {
         args = <String, dynamic>{"image": imagePath, "content": contentText};
       }
     }
-    final bool version = await _channel.invokeMethod('shareOptions', args);
+    final bool? version = await _channel.invokeMethod('shareOptions', args);
     return version;
   }
 
-  static Future<String> shareWhatsapp(String contentText,
-      {String imagePath, String phoneNumber}) async {
+  static Future<String?> shareWhatsapp(String contentText,
+      {String? imagePath, String? phoneNumber}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{"image": imagePath, "content": contentText};
@@ -280,12 +280,12 @@ class SocialShare {
       }
     }
     // final Map<String, dynamic> args = <String, dynamic>{"content": content};
-    final String version = await _channel.invokeMethod('shareWhatsapp', args);
+    final String? version = await _channel.invokeMethod('shareWhatsapp', args);
     return version;
   }
 
-  static Future<String> shareInstagram(String contentText,
-      {String imagePath}) async {
+  static Future<String?> shareInstagram(String contentText,
+      {String? imagePath}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{"image": imagePath, "content": contentText};
@@ -306,19 +306,19 @@ class SocialShare {
       }
     }
     // final Map<String, dynamic> args = <String, dynamic>{"content": content};
-    final String version = await _channel.invokeMethod('shareInstagram', args);
+    final String? version = await _channel.invokeMethod('shareInstagram', args);
     return version;
   }
 
-  static Future<String> shareInstagramDM(String content) async {
+  static Future<String?> shareInstagramDM(String content) async {
     final Map<String, dynamic> args = <String, dynamic>{"content": content};
-    final String version =
+    final String? version =
         await _channel.invokeMethod('shareInstagramDM', args);
     return version;
   }
 
-  static Future<String> shareTwitterPost(String contentText,
-      {String imagePath}) async {
+  static Future<String?> shareTwitterPost(String contentText,
+      {String? imagePath}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{"image": imagePath, "content": contentText};
@@ -338,12 +338,12 @@ class SocialShare {
         args = <String, dynamic>{"image": imagePath, "content": contentText};
       }
     }
-    final String version = await _channel.invokeMethod('shareTwitter', args);
+    final String? version = await _channel.invokeMethod('shareTwitter', args);
     return version;
   }
 
-  static Future<String> shareTwitterDM(String contentText,
-      {String imagePath}) async {
+  static Future<String?> shareTwitterDM(String contentText,
+      {String? imagePath}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{"image": imagePath, "content": contentText};
@@ -363,17 +363,17 @@ class SocialShare {
         args = <String, dynamic>{"image": imagePath, "content": contentText};
       }
     }
-    final String version = await _channel.invokeMethod('shareTwitterDM', args);
+    final String? version = await _channel.invokeMethod('shareTwitterDM', args);
     return version;
   }
 
-  static Future<Map> checkInstalledAppsForShare() async {
-    final Map apps = await _channel.invokeMethod('checkInstalledApps');
+  static Future<Map?> checkInstalledAppsForShare() async {
+    final Map? apps = await _channel.invokeMethod('checkInstalledApps');
     return apps;
   }
 
-  static Future<String> shareTelegram(String contentText,
-      {String imagePath}) async {
+  static Future<String?> shareTelegram(String contentText,
+      {String? imagePath}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{"image": imagePath, "content": contentText};
@@ -393,12 +393,12 @@ class SocialShare {
         args = <String, dynamic>{"image": imagePath, "content": contentText};
       }
     }
-    final String version = await _channel.invokeMethod('shareTelegram', args);
+    final String? version = await _channel.invokeMethod('shareTelegram', args);
     return version;
   }
 
-  static Future<String> shareEmail(String contentText,
-      {String imagePath}) async {
+  static Future<String?> shareEmail(String contentText,
+      {String? imagePath}) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{"image": imagePath, "content": contentText};
@@ -418,7 +418,7 @@ class SocialShare {
         args = <String, dynamic>{"image": imagePath, "content": contentText};
       }
     }
-    final String version = await _channel.invokeMethod('shareEmail', args);
+    final String? version = await _channel.invokeMethod('shareEmail', args);
     return version;
   }
 
